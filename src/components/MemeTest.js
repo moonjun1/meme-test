@@ -29,9 +29,16 @@ const PopupAd = ({ onClose }) => (
       X
     </button>
     <h3 className="text-lg font-bold mb-4">⛔️ 팝업 광고</h3>
-    <p className="text-gray-600">광고 내용이 여기에 표시됩니다.</p>
+    {/* 이미지 추가 및 크기 조절 */}
+    <img 
+      src="age.png" 
+      alt="광고 이미지" 
+      className="w-full h-32 object-cover rounded-md mb-4"
+    />
+    <p className="text-gray-600">"확실히 나이 든 것 같습니다"</p>
   </div>
 );
+
 
 const PageWrapper = ({ children, showPopup, onClosePopup }) => (
   <div className="min-h-screen bg-indigo-900 p-4">
@@ -58,21 +65,21 @@ const PageWrapper = ({ children, showPopup, onClosePopup }) => (
             <div className="space-y-4">
               <div className="bg-gray-200 h-24 rounded-md overflow-hidden">
                 <img 
-                  src="/api/placeholder/200/200"
+                  src="jerry.png"
                   alt="상품1" 
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="bg-gray-200 h-24 rounded-md overflow-hidden">
                 <img 
-                  src="/api/placeholder/201/200"
+                  src="kid.png"
                   alt="상품2" 
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="bg-gray-200 h-24 rounded-md overflow-hidden">
                 <img 
-                  src="/api/placeholder/202/200"
+                  src="good.png"
                   alt="상품3" 
                   className="w-full h-full object-cover"
                 />
@@ -114,7 +121,7 @@ const MemeTest = () => {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch('http://api.mzstudio.site:8080/memes');
+        const response = await fetch('https://api.mzstudio.site/memes');
         const data = await response.json();
         setQuestions(data);
       } catch (error) {
@@ -130,7 +137,7 @@ const MemeTest = () => {
       if (questions.length > 0 && currentScreen === 'test') {
         try {
           const currentMemeId = questions[currentQuestion].id;
-          const response = await fetch(`http://api.mzstudio.site:8080/memes/choice/${currentMemeId}`);
+          const response = await fetch(`https://api.mzstudio.site/memes/choice/${currentMemeId}`);
           const data = await response.json();
           setChoices(data.slice(0, 3));
         } catch (error) {
@@ -159,7 +166,7 @@ const MemeTest = () => {
   useEffect(() => {
     const fetchRanking = async () => {
       try {
-        const response = await fetch('http://api.mzstudio.site:8080/users');
+        const response = await fetch('https://api.mzstudio.site/users');
         const data = await response.json();
         setRanking(data.slice(0, 10));
       } catch (error) {
@@ -173,7 +180,7 @@ const MemeTest = () => {
     if (userName.trim()) {
       setIsLoading(true);
       try {
-        const response = await fetch('http://api.mzstudio.site:8080/users/create', {
+        const response = await fetch('https://api.mzstudio.site/users/create', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -217,7 +224,7 @@ const MemeTest = () => {
 
   const handleReset = useCallback(async () => {
     try {
-      const updateResponse = await fetch('http://api.mzstudio.site:8080/users/update', {
+      const updateResponse = await fetch('https://api.mzstudio.site/users/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -254,8 +261,8 @@ const MemeTest = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="text-center space-y-8">
             <div>
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
-                밈 테스트 챌린지
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                밈 테스트 첼린지
               </h1>
               <p className="text-xl text-gray-600">당신의 밈 레벨을 테스트해보세요! 🤔</p>
             </div>
@@ -397,55 +404,54 @@ const MemeTest = () => {
     );
   }
 
-  // 결과 화면 렌더링
   if (currentScreen === 'result') {
     const percentage = ((userScore / questions.length) * 100).toFixed(1);
-    
+  
     return (
       <PageWrapper showPopup={showPopup} onClosePopup={() => setShowPopup(false)}>
-        <div className="max-w-2xl mx-auto text-center space-y-8">
+        <div className="max-w-2xl mx-auto text-center p-4 space-y-6"> {/* padding 추가 */}
           <div className="space-y-4">
-            <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               {userName}님의 테스트 결과
             </h1>
-            <div className="text-8xl animate-bounce">🎉</div>
+            <div className="text-6xl md:text-8xl animate-bounce">🎉</div>
           </div>
-
-          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-8 space-y-6">
-            <div className="grid grid-cols-3 gap-4">
-              <div className="bg-white p-4 rounded-xl">
-                <p className="text-gray-600">총 문제</p>
-                <p className="text-2xl font-bold text-indigo-600">{questions.length}개</p>
+  
+          <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-4 md:p-8 space-y-4 md:space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+              <div className="bg-white p-3 md:p-4 rounded-xl">
+                <p className="text-sm md:text-base text-gray-600">총 문제</p>
+                <p className="text-xl md:text-2xl font-bold text-indigo-600">{questions.length}개</p>
               </div>
-              <div className="bg-white p-4 rounded-xl">
-                <p className="text-gray-600">정답</p>
-                <p className="text-2xl font-bold text-green-600">{userScore}개</p>
+              <div className="bg-white p-3 md:p-4 rounded-xl">
+                <p className="text-sm md:text-base text-gray-600">정답</p>
+                <p className="text-xl md:text-2xl font-bold text-green-600">{userScore}개</p>
               </div>
-              <div className="bg-white p-4 rounded-xl">
-                <p className="text-gray-600">정답률</p>
-                <p className="text-2xl font-bold text-purple-600">{percentage}%</p>
+              <div className="bg-white p-3 md:p-4 rounded-xl">
+                <p className="text-sm md:text-base text-gray-600">정답률</p>
+                <p className="text-xl md:text-2xl font-bold text-purple-600">{percentage}%</p>
               </div>
             </div>
-
+  
             {userLevel && (
-              <div className="bg-white p-6 rounded-xl">
-                <h3 className="text-xl font-bold text-gray-700 mb-2">🎖 획득한 칭호</h3>
-                <p className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              <div className="bg-white p-4 md:p-6 rounded-xl">
+                <h3 className="text-lg md:text-xl font-bold text-gray-700 mb-2">🎖 획득한 칭호</h3>
+                <p className="text-xl md:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
                   {userLevel}
                 </p>
               </div>
             )}
-
-            <div className="grid grid-cols-2 gap-4">
+  
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
               <button
                 onClick={handleReset}
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 transform transition-all hover:scale-[1.02]"
+                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3 md:py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 transform transition-all hover:scale-[1.02]"
               >
                 결과 보기
               </button>
               <button
                 onClick={handleGoToMain}
-                className="w-full bg-white text-indigo-600 font-bold py-4 rounded-xl border-2 border-indigo-100 hover:bg-indigo-50 hover:border-indigo-200 transform transition-all hover:scale-[1.02]"
+                className="w-full bg-white text-indigo-600 font-bold py-3 md:py-4 rounded-xl border-2 border-indigo-100 hover:bg-indigo-50 hover:border-indigo-200 transform transition-all hover:scale-[1.02]"
               >
                 메인으로
               </button>
@@ -455,7 +461,6 @@ const MemeTest = () => {
       </PageWrapper>
     );
   }
-
   // 로딩 화면 렌더링
   return (
     <PageWrapper showPopup={showPopup} onClosePopup={() => setShowPopup(false)}>
