@@ -1,4 +1,4 @@
-import MemeTest from './components/MemeTest';
+import MemeTest from './MemeTest';
 //import MemeTest from './pages/MemeTest';
 import React from 'react';
 
